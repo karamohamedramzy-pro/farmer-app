@@ -1,0 +1,39 @@
+body{font-family:Tahoma,Arial,sans-serif;background:#f1f8e9;margin:0;padding:15px}
+.wrap{max-width:900px;margin:auto}
+h1{color:#2e7d32}
+
+/* زر اللغة */
+.lang-btn{position:fixed;top:12px;inset-inline-end:12px;z-index:10;width:auto;
+  padding:8px 16px;background:#fff;color:#2e7d32;border:2px solid #2e7d32;
+  border-radius:20px;font-size:15px;font-weight:bold;cursor:pointer}
+
+/* بطاقات */
+.box{max-width:420px;margin:50px auto 30px;background:#fff;padding:25px;border-radius:12px;box-shadow:0 2px 10px #0002}
+.box h1{text-align:center}
+.card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 2px 10px #0002;margin-top:20px;overflow-x:auto}
+
+/* حقول وأزرار */
+input{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:8px;font-size:16px;box-sizing:border-box}
+button{padding:12px 24px;background:#2e7d32;color:#fff;border:0;border-radius:8px;font-size:17px;cursor:pointer;margin-top:10px}
+.box button{width:100%}
+.err{color:#c62828;text-align:center}
+label{font-size:14px;color:#555}
+
+/* دليل الاستعمال */
+.guide{background:#fff8e1;border-inline-start:5px solid #ffb300;padding:12px 18px;border-radius:8px;margin-top:20px;line-height:1.9}
+
+/* أخضر موجب / أحمر سالب */
+.plus{color:#2e7d32;font-weight:bold}
+.minus{color:#c62828;font-weight:bold}
+td.plus,td.minus{direction:ltr}
+
+/* المنتجات */
+.chips a{display:inline-block;margin:4px;padding:10px 16px;border-radius:20px;text-decoration:none;color:#fff}
+.veg{background:#43a047}
+.fruit{background:#ef6c00}
+
+/* الجدول */
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px;border-bottom:1px solid #eee;text-align:center;white-space:nowrap}
+th{background:#e8f5e9}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}

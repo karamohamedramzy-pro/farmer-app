@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مزرعتي</title>
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="/static/js/i18n.js"></script>
+</head>
+<body>
+<button id="langBtn" class="lang-btn" type="button">English</button>
+
+<div class="wrap">
+  <h1><span data-i18n="welcome">أهلاً وسهلاً</span> {{ username }} 🌱</h1>
+  <a href="/logout" data-i18n="logout">تسجيل خروج</a>
+
+  <h3 data-i18n="choose_product">اختر المنتج:</h3>
+  <div class="chips">
+    {% for p in products %}
+      <a class="{{ p.type }}" href="/welcome?product_id={{ p.id }}"
+         data-ar="{{ p.name_ar }}" data-en="{{ p.name_en }}">{{ p.name_ar }}</a>
+    {% endfor %}
+  </div>
+
+  {% if selected %}
+  <div class="card">
+    <h2 data-ar="{{ selected.name_ar }}" data-en="{{ selected.name_en }}">{{ selected.name_ar }}</h2>
+    <form method="post" action="/entry">
+      <input type="hidden" name="product_id" value="{{ selected.id }}">
+      <div class="grid">
+        <div><label data-i18n="qty_start"></label><input type="number" step="any" min="0" name="qty_start" value="0"></div>
+        <div><label data-i18n="qty_sold"></label><input type="number" step="any" min="0" name="qty_end" value="0"></div>
+        <div><label data-i18n="money_paid"></label><input type="number" step="any" min="0" name="money_start" value="0"></div>
+        <div><label data-i18n="money_received"></label><input type="number" step="any" min="0" name="money_end" value="0"></div>
+      </div>
+      <button data-i18n="save">حفظ</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <table>
+      <tr>
+        <th data-i18n="date"></th><th data-i18n="qty"></th><th data-i18n="sold"></th>
+        <th data-i18n="remaining"></th><th data-i18n="paid"></th>
+        <th data-i18n="received"></th><th data-i18n="profit"></th>
+      </tr>
+      {% for r in rows %}
+        {% set q = r.qty_start + r.qty_end %}
+        {% set m = r.money_start + r.money_end %}
+        <tr>
+          <td>{{ r.entry_date }}</td>
+          <td class="plus">+{{ r.qty_start|round(2) }}</td>
+          <td class="minus">{{ r.qty_end|round(2) }}</td>
+          <td class="{{ 'plus' if q>=0 else 'minus' }}">{{ '+' if q>=0 }}{{ q|round(2) }}</td>
+          <td class="minus">{{ r.money_start|round(2) }}$</td>
+          <td class="plus">+{{ r.money_end|round(2) }}$</td>
+          <td class="{{ 'plus' if m>=0 else 'minus' }}">{{ '+' if m>=0 }}{{ m|round(2) }}$</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% endif %}
+</div>
+</body>
+</html>

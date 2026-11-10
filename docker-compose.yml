@@ -1,0 +1,21 @@
+# للتجربة المحلية فقط:  docker compose up --build
+# ثم افتح http://localhost:8000
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: farmer
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:secret@db:5432/farmer
+      SECRET_KEY: local-dev-key
+    depends_on:
+      - db
+volumes:
+  dbdata:
