@@ -1,0 +1,12 @@
+// Prototype data only. Replace this module and the App state handlers with a JSON API adapter.
+export type Product = {id:number; ar:string; en:string; icon:string; type:'veg'|'fruit'};
+export type Entry = {product_id:number; date:string; qty_start:number; qty_end:number; money_start:number; money_end:number};
+export type Source = {id:number; name:string; field:string; description:string; phone:string; location:string; images:string[]};
+export type StorageKind = 'subscription'|'local'|'cloud';
+export type Storage = {status:'off'|'on'|'expired'; hosts?:string[]; code?:string};
+export const products: Product[] = [
+ {id:1,ar:'بطاطا',en:'Potato',icon:'🥔',type:'veg'},{id:2,ar:'طماطم',en:'Tomato',icon:'🍅',type:'veg'},{id:3,ar:'بصل',en:'Onion',icon:'🧅',type:'veg'},{id:4,ar:'خيار',en:'Cucumber',icon:'🥒',type:'veg'},{id:5,ar:'جزر',en:'Carrot',icon:'🥕',type:'veg'},{id:6,ar:'فلفل',en:'Pepper',icon:'🫑',type:'veg'},
+ {id:7,ar:'تفاح',en:'Apple',icon:'🍎',type:'fruit'},{id:8,ar:'برتقال',en:'Orange',icon:'🍊',type:'fruit'},{id:9,ar:'عنب',en:'Grapes',icon:'🍇',type:'fruit'},{id:10,ar:'تين',en:'Fig',icon:'🌿',type:'fruit'},{id:11,ar:'رمان',en:'Pomegranate',icon:'🌿',type:'fruit'},{id:12,ar:'موز',en:'Banana',icon:'🍌',type:'fruit'}];
+export const initialEntries:Entry[]=[{product_id:1,date:'2026-11-10',qty_start:30,qty_end:25,money_start:1000,money_end:1500},{product_id:1,date:'2026-11-09',qty_start:20,qty_end:22,money_start:900,money_end:700}];
+export const initialSources:Source[]=[{id:1,name:'مزرعة الأمل',field:'خضار ورقية',description:'خضار طازجة من المزرعة مباشرة، كل يوم.',phone:'+966 50 123 4567',location:'الرياض، المملكة العربية السعودية',images:['/farm.jpg']},{id:2,name:'مزارع الوادي',field:'خضار وفاكهة',description:'منتجات موسمية بعناية من أرضنا.',phone:'+966 55 234 5678',location:'القصيم، المملكة العربية السعودية',images:['/farm.jpg','/farm.jpg']},{id:3,name:'أبو محمد',field:'مورد محلي',description:'مورد موثوق للمنتجات الطازجة.',phone:'+966 54 345 6789',location:'سوق الخضار المركزي',images:[]}];
+export const sourceEn:Record<number,Pick<Source,'name'|'field'|'description'|'location'>>={1:{name:'Hope Farm',field:'Leafy greens',description:'Fresh vegetables straight from the farm, every day.',location:'Riyadh, Saudi Arabia'},2:{name:'Valley Farms',field:'Fruit & vegetables',description:'Seasonal produce, grown with care.',location:'Al Qassim, Saudi Arabia'},3:{name:'Abu Mohammed',field:'Local supplier',description:'A trusted supplier of fresh produce.',location:'Central produce market'}};
