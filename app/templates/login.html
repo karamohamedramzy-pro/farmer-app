@@ -1,0 +1,25 @@
+{% extends "auth_base.html" %}
+{% block body %}
+  {% if error %}<p class="err" data-i18n="{{ error }}"></p>{% endif %}
+  <p class="muted" data-i18n="login_hint">اكتب بريدك الإلكتروني وسنرسل لك رابط الدخول.</p>
+  <form method="post" action="/login">
+    <label for="email" data-i18n="email">البريد الإلكتروني</label>
+    <input id="email" name="email" type="email" value="{{ email or '' }}" autocomplete="email"
+           data-i18n-placeholder="ph_email" placeholder="البريد الإلكتروني" required>
+    <button class="btn-block" data-i18n="login_btn">أرسل لي رابط الدخول</button>
+  </form>
+  <a class="btn btn-outline btn-block" href="/register" data-i18n="create_account">إنشاء حساب جديد</a>
+
+  <div class="guide">
+    <h3 data-i18n="guide_title">📖 كيف تستعمل الموقع؟</h3>
+    <ol>
+      <li data-i18n="g1"></li>
+      <li data-i18n="g2"></li>
+      <li data-i18n="g3"></li>
+      <li data-i18n="g4"></li>
+      <li data-i18n="g5"></li>
+      <li data-i18n="g6"></li>
+    </ol>
+    <p data-i18n="g_example"></p>
+  </div>
+{% endblock %}

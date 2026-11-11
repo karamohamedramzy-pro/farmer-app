@@ -1,0 +1,13 @@
+{% extends "auth_base.html" %}
+{% block body %}
+  <h2 data-i18n="ce_title">تحقق من بريدك</h2>
+  <p><span data-i18n="ce_text"></span><br><b dir="ltr">{{ email }}</b></p>
+  <p class="muted" data-i18n="ce_note"></p>
+  {% if dev_link %}
+  <div class="dev-box">
+    <span data-i18n="dev_note"></span><br>
+    <a id="dev-link" href="{{ dev_link }}" data-i18n="dev_link">رابط الدخول</a>
+  </div>
+  {% endif %}
+  <a class="btn btn-outline btn-block" href="/" data-i18n="ce_back">رجوع</a>
+{% endblock %}

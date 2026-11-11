@@ -1,0 +1,20 @@
+{% extends "auth_base.html" %}
+{% block body %}
+  <h2 data-i18n="vp_title">كود واتساب</h2>
+  <p><span data-i18n="vp_text"></span> <b dir="ltr">{{ phone }}</b></p>
+  {% if error %}<p class="err" data-i18n="{{ error }}"></p>{% endif %}
+  {% if dev_code %}
+  <div class="dev-box">
+    <span data-i18n="dev_note"></span>
+    <code id="dev-code">{{ dev_code }}</code>
+  </div>
+  {% endif %}
+  <form method="post" action="/verify-phone">
+    <input class="code-input" name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6"
+           autocomplete="one-time-code" placeholder="000000" required autofocus>
+    <button class="btn-block" data-i18n="vp_btn">تأكيد ودخول</button>
+  </form>
+  <form method="post" action="/verify-phone/resend">
+    <button class="btn-outline btn-block" data-i18n="vp_resend">إعادة إرسال الكود</button>
+  </form>
+{% endblock %}
