@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="page-head">
+  <h1 data-i18n="nav_sources">مصادري</h1>
+  <a class="btn" href="/sources/new" data-i18n="add_source">➕ إضافة مصدر</a>
+</div>
+
+{% if not sources %}
+<div class="empty"><div class="big">🤝</div><p data-i18n="no_sources">لا توجد مصادر بعد.</p>
+  <a class="btn" href="/sources/new" data-i18n="add_source">➕ إضافة مصدر</a></div>
+{% endif %}
+
+<div class="cards">
+{% for s in sources %}
+  <article class="src">
+    {% if s.images %}
+      <div class="imgs n{{ s.images|length }}">
+        {% for u in s.images %}<img src="{{ u }}" alt="" loading="lazy" referrerpolicy="no-referrer">{% endfor %}
+      </div>
+    {% else %}
+      <div class="imgs none">🌿</div>
+    {% endif %}
+    <h3>{{ s.name }}</h3>
+    {% if s.field %}<span class="badge">{{ s.field }}</span>{% endif %}
+    {% if s.description %}<p>{{ s.description }}</p>{% endif %}
+    {% if s.phone %}<p>📞 <a href="tel:{{ s.phone }}" dir="ltr">{{ s.phone }}</a></p>{% endif %}
+    {% if s.location %}
+      <p>📍
+        {% if s.location.startswith('http') %}
+          <a href="{{ s.location }}" target="_blank" rel="noopener noreferrer" data-i18n="open_map">فتح الخريطة</a>
+        {% else %}{{ s.location }}{% endif %}
+      </p>
+    {% endif %}
+    <a class="btn btn-outline" href="/sources/{{ s.id }}/edit" data-i18n="edit">تعديل</a>
+  </article>
+{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,3 @@
+# للاختبارات فقط:  pip install -r requirements.txt -r requirements-dev.txt && pytest
+pytest
+httpx

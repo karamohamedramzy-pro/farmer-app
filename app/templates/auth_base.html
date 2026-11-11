@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مزرعتي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="/static/js/i18n.js"></script>
+</head>
+<body class="auth">
+<button id="langBtn" class="lang-btn" type="button">English</button>
+<div class="auth-brand">
+  <span class="mark" aria-hidden="true">🌾</span>
+  <span class="name" data-i18n="brand_name">مزرعتي</span>
+  <span class="tag" data-i18n="tagline">سجّل يومك. اعرف ربحك.</span>
+</div>
+<div class="box">
+  {% block body %}{% endblock %}
+</div>
+</body>
+</html>

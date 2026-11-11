@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+{% set icons = {"Potato":"🥔","Tomato":"🍅","Onion":"🧅","Cucumber":"🥒","Carrot":"🥕","Pepper":"🫑","Apple":"🍎","Orange":"🍊","Grapes":"🍇","Banana":"🍌"} %}
+<h1 data-i18n="nav_products">منتجاتي</h1>
+
+<div class="tiles">
+  {% for p in products %}
+    <a class="tile {{ p.type }} {{ 'sel' if selected and selected.id == p.id }}" href="/products?product_id={{ p.id }}">
+      <span class="em" aria-hidden="true">{{ icons.get(p.name_en, "🌿") }}</span>
+      <span data-ar="{{ p.name_ar }}" data-en="{{ p.name_en }}">{{ p.name_ar }}</span>
+    </a>
+  {% endfor %}
+</div>
+
+{% if selected %}
+  {% if rows %}
+    {% set r = rows[0] %}
+    {% set q = r.qty_start + r.qty_end %}
+    {% set m = r.money_start + r.money_end %}
+    {% set total = (rows|sum(attribute="money_start")) + (rows|sum(attribute="money_end")) %}
+    <div class="result">
+      <div class="stat {{ '' if q >= 0 else 'loss' }}">
+        <div class="lbl"><span data-i18n="last_entry">آخر إدخال</span> · <span data-i18n="remaining">المتبقي</span></div>
+        <div class="n {{ 'plus' if q >= 0 else 'minus' }}">{{ '+' if q >= 0 }}{{ q|num }}</div>
+        <div class="sub">{{ r.entry_date }}</div>
+      </div>
+      <div class="stat {{ '' if m >= 0 else 'loss' }}">
+        <div class="lbl"><span data-i18n="last_entry">آخر إدخال</span> · <span data-i18n="profit">الربح</span></div>
+        <div class="n {{ 'plus' if m >= 0 else 'minus' }}">{{ '+' if m >= 0 }}{{ m|num }}$</div>
+        <div class="sub"><span data-i18n="total_profit">إجمالي الربح</span>: <b class="{{ 'plus' if total >= 0 else 'minus' }}" dir="ltr">{{ '+' if total >= 0 }}{{ total|num }}$</b></div>
+      </div>
+    </div>
+  {% endif %}
+
+  <form method="post" action="/entry">
+    <input type="hidden" name="product_id" value="{{ selected.id }}">
+    <div class="daygrid">
+      <div class="daybox">
+        <h3>☀️ <span data-i18n="start_day">بداية اليوم</span></h3>
+        <label for="qty_start"><span class="sg plus">+</span><span data-i18n="lbl_qty_in">الكمية التي أحضرتها</span></label>
+        <input id="qty_start" type="number" inputmode="decimal" step="any" min="0" name="qty_start" value="0">
+        <label for="money_start"><span class="sg minus">−</span><span data-i18n="lbl_money_out">المبلغ الذي دفعته $</span></label>
+        <input id="money_start" type="number" inputmode="decimal" step="any" min="0" name="money_start" value="0">
+      </div>
+      <div class="daybox">
+        <h3>🌙 <span data-i18n="end_day">نهاية اليوم</span></h3>
+        <label for="qty_end"><span class="sg minus">−</span><span data-i18n="lbl_qty_sold">الكمية التي بعتها</span></label>
+        <input id="qty_end" type="number" inputmode="decimal" step="any" min="0" name="qty_end" value="0">
+        <label for="money_end"><span class="sg plus">+</span><span data-i18n="lbl_money_in">المبلغ الذي قبضته $</span></label>
+        <input id="money_end" type="number" inputmode="decimal" step="any" min="0" name="money_end" value="0">
+      </div>
+    </div>
+    <button class="btn-block" data-i18n="save">حفظ</button>
+  </form>
+
+  {% if rows %}
+  <div class="card">
+    <table>
+      <tr>
+        <th data-i18n="date"></th><th data-i18n="qty"></th><th data-i18n="sold"></th>
+        <th data-i18n="remaining"></th><th data-i18n="paid"></th>
+        <th data-i18n="received"></th><th data-i18n="profit"></th>
+      </tr>
+      {% for r in rows %}
+        {% set q = r.qty_start + r.qty_end %}
+        {% set m = r.money_start + r.money_end %}
+        <tr>
+          <td>{{ r.entry_date }}</td>
+          <td class="plus">+{{ r.qty_start|num }}</td>
+          <td class="minus">{{ r.qty_end|num }}</td>
+          <td class="{{ 'plus' if q>=0 else 'minus' }}">{{ '+' if q>=0 }}{{ q|num }}</td>
+          <td class="minus">{{ r.money_start|num }}$</td>
+          <td class="plus">+{{ r.money_end|num }}$</td>
+          <td class="{{ 'plus' if m>=0 else 'minus' }}">{{ '+' if m>=0 }}{{ m|num }}$</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% else %}
+  <div class="empty"><div class="big">🌱</div><p data-i18n="no_entries"></p></div>
+  {% endif %}
+{% endif %}
+{% endblock %}

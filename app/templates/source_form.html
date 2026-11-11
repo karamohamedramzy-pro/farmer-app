@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1 data-i18n="{{ 'src_edit' if is_edit else 'src_new' }}">مصدر</h1>
+<div class="card">
+  {% if error %}<p class="err" data-i18n="{{ error }}"></p>{% endif %}
+  <p class="hint" data-i18n="src_hint"></p>
+  <form method="post" action="{{ action }}">
+    <label data-i18n="src_name">الاسم (مطلوب)</label>
+    <input name="name" value="{{ form.name or '' }}" maxlength="100" required>
+    <label data-i18n="src_field">المجال</label>
+    <input name="field" value="{{ form.field or '' }}" maxlength="100">
+    <label data-i18n="src_desc">الوصف</label>
+    <textarea name="description" maxlength="1000">{{ form.description or '' }}</textarea>
+    <label data-i18n="src_phone">رقم الهاتف</label>
+    <input name="phone" type="tel" dir="ltr" value="{{ form.phone or '' }}" maxlength="20">
+    <label data-i18n="src_location">الموقع</label>
+    <input name="location" value="{{ form.location or '' }}" maxlength="300">
+    <label data-i18n="src_images">روابط الصور</label>
+    {% set imgs = form.images or [] %}
+    {% for i in range(4) %}
+      <input name="img{{ i + 1 }}" type="url" dir="ltr" maxlength="500" value="{{ imgs[i] if i < imgs|length else '' }}" placeholder="https://…">
+    {% endfor %}
+    <div class="dlg-actions">
+      <button data-i18n="save">حفظ</button>
+      <a class="btn btn-outline" href="/sources" data-i18n="cancel">إلغاء</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

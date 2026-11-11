@@ -1,0 +1,158 @@
+{% macro robot() -%}
+<svg viewBox="0 0 48 48" width="46" height="46" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <line x1="24" y1="12" x2="24" y2="6"/><circle cx="24" cy="4.5" r="2" fill="currentColor"/>
+  <rect x="8" y="12" width="32" height="24" rx="6"/>
+  <circle cx="18" cy="22" r="3" fill="currentColor"/><circle cx="30" cy="22" r="3" fill="currentColor"/>
+  <line x1="17" y1="30" x2="31" y2="30"/>
+  <line x1="4" y1="21" x2="4" y2="27"/><line x1="44" y1="21" x2="44" y2="27"/>
+  <line x1="16" y1="36" x2="16" y2="43"/><line x1="32" y1="36" x2="32" y2="43"/>
+</svg>
+{%- endmacro %}
+{% set sub = storage.sub %}
+{% set loc = storage.local %}
+{% set cld = storage.cloud %}
+{% set sub_on = sub and sub.active %}
+
+<footer class="footer">
+  <!-- الروبوتات الثلاثة: رمادي = غير مفعّل، أخضر = مفعّل -->
+  <div class="robots">
+    <div class="robot-item">
+      <button type="button" class="robot {{ 'on' if sub_on else 'off' }}" data-dialog="dlg-sub" aria-label="subscription">{{ robot() }}</button>
+      <span class="robot-label" data-i18n="r1_label">اشتراك</span>
+      <span class="pill {{ 'on' if sub_on }}" data-i18n="{{ 'status_on' if sub_on else 'status_off' }}"></span>
+      {% if sub %}
+      <div class="robot-info">
+        {% if sub.active %}
+          <b><span data-i18n="days_left">الأيام المتبقية</span>: {{ sub.days_left }}</b>
+          <span data-i18n="usage_products">مساحة المنتجات</span>: <span dir="ltr">{{ sub.p_used|num }}/{{ sub.p_limit }} KB</span>
+          <div class="bar"><i class="{{ 'hot' if sub.p_pct >= 90 }}" style="width:{{ sub.p_pct }}%"></i></div>
+          <span data-i18n="usage_sources">مساحة المصادر</span>: <span dir="ltr">{{ sub.s_used|num }}/{{ sub.s_limit }} KB</span>
+          <div class="bar"><i class="{{ 'hot' if sub.s_pct >= 90 }}" style="width:{{ sub.s_pct }}%"></i></div>
+        {% else %}
+          <b class="minus" data-i18n="sub_expired">انتهى الاشتراك</b>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="robot-item">
+      <button type="button" class="robot {{ 'on' if loc else 'off' }}" data-dialog="dlg-local" aria-label="local storage">{{ robot() }}</button>
+      <span class="robot-label" data-i18n="r2_label">تخزين محلي</span>
+      <span class="pill {{ 'on' if loc }}" data-i18n="{{ 'status_on' if loc else 'status_off' }}"></span>
+      {% if loc %}<div class="robot-info status-ok" data-i18n="connected">متصل ✅</div>{% endif %}
+    </div>
+
+    <div class="robot-item">
+      <button type="button" class="robot {{ 'on' if cld else 'off' }}" data-dialog="dlg-cloud" aria-label="cloud storage">{{ robot() }}</button>
+      <span class="robot-label" data-i18n="r3_label">تخزين سحابي</span>
+      <span class="pill {{ 'on' if cld }}" data-i18n="{{ 'status_on' if cld else 'status_off' }}"></span>
+      {% if cld %}<div class="robot-info status-ok" data-i18n="connected">متصل ✅</div>{% endif %}
+    </div>
+  </div>
+
+  {% if not storage.any_active %}
+  <p class="contact">
+    <span data-i18n="contact_a">تواصلوا مع المبرمج من خلال</span>
+    <a href="{{ TELEGRAM_URL }}" target="_blank" rel="noopener noreferrer" data-i18n="telegram">تلغرام</a>
+    <span data-i18n="contact_b">ويمكنكم زيارة صفحة</span>
+    <a href="{{ DOCS_URL }}" target="_blank" rel="noopener noreferrer" data-i18n="docs_name">Document TB-farm</a>
+  </p>
+  {% endif %}
+
+  <div class="footer-bottom">
+    <span>© {{ YEAR }} TB-farm — <span data-i18n="f_rights">جميع الحقوق محفوظة</span></span>
+    <span data-i18n="f_beta">نسخة تجريبية</span>
+    <a href="{{ TELEGRAM_URL }}" target="_blank" rel="noopener noreferrer" data-i18n="telegram">تلغرام</a>
+    <a href="{{ DOCS_URL }}" target="_blank" rel="noopener noreferrer" data-i18n="docs_name">Document TB-farm</a>
+    {% if SUPPORT_EMAIL %}<a href="mailto:{{ SUPPORT_EMAIL }}">{{ SUPPORT_EMAIL }}</a>{% endif %}
+  </div>
+</footer>
+
+<!-- ============ نافذة الروبوت 1: كود الاشتراك ============ -->
+<dialog id="dlg-sub" class="dlg">
+  <h3 data-i18n="d_sub_title">كود الاشتراك</h3>
+  {% if open_dlg == 'dlg-sub' and msg %}<p class="err" data-i18n="{{ msg }}"></p>{% endif %}
+  {% if sub %}
+    {% if sub.active %}
+      <p class="status-ok"><span data-i18n="connected">متصل ✅</span> <span dir="ltr">(…{{ sub.tail }})</span></p>
+      <p><span data-i18n="days_left">الأيام المتبقية</span>: <b>{{ sub.days_left }}</b> <span data-i18n="day_unit">يوم</span></p>
+      <p><span data-i18n="usage_products">مساحة المنتجات</span>: <span dir="ltr">{{ sub.p_used|num }} / {{ sub.p_limit }} KB</span></p>
+      <p><span data-i18n="usage_sources">مساحة المصادر</span>: <span dir="ltr">{{ sub.s_used|num }} / {{ sub.s_limit }} KB</span></p>
+    {% else %}
+      <p class="minus" data-i18n="sub_expired">انتهى الاشتراك</p>
+    {% endif %}
+    <form method="post" action="/storage/disconnect" class="dlg-actions">
+      <input type="hidden" name="next" value="{{ current }}"><input type="hidden" name="mode" value="subscription">
+      <button class="btn-danger" data-i18n="disconnect">فصل</button>
+      <button type="button" class="btn-outline" data-close data-i18n="close">إغلاق</button>
+    </form>
+  {% else %}
+    <p class="muted" data-i18n="d_sub_hint">أدخل كود الاشتراك الذي أعطاك إياه المبرمج.</p>
+    <form method="post" action="/storage/subscription">
+      <input type="hidden" name="next" value="{{ current }}">
+      <input name="code" dir="ltr" autocomplete="off" maxlength="40" data-i18n-placeholder="sub_code_ph" placeholder="FARM-XXXX-30" required>
+      <div class="dlg-actions">
+        <button data-i18n="activate">تفعيل</button>
+        <button type="button" class="btn-outline" data-close data-i18n="close">إغلاق</button>
+      </div>
+    </form>
+  {% endif %}
+</dialog>
+
+<!-- ============ نافذة الروبوت 2: تخزين محلي ============ -->
+<dialog id="dlg-local" class="dlg">
+  <h3 data-i18n="d_local_title">تخزين محلي على جهازك</h3>
+  {% if open_dlg == 'dlg-local' and msg %}<p class="err" data-i18n="{{ msg }}"></p>{% endif %}
+  <p class="muted" data-i18n="d_local_hint"></p>
+  {% if loc %}
+    <p class="status-ok" data-i18n="connected">متصل ✅</p>
+    {% if loc.products_url %}<p><span data-i18n="local_products_url"></span>:<br><span dir="ltr">{{ loc.products_url }}</span></p>{% endif %}
+    {% if loc.sources_url %}<p><span data-i18n="local_sources_url"></span>:<br><span dir="ltr">{{ loc.sources_url }}</span></p>{% endif %}
+    <form method="post" action="/storage/disconnect" class="dlg-actions">
+      <input type="hidden" name="next" value="{{ current }}"><input type="hidden" name="mode" value="local">
+      <button class="btn-danger" data-i18n="disconnect">فصل</button>
+      <button type="button" class="btn-outline" data-close data-i18n="close">إغلاق</button>
+    </form>
+  {% else %}
+    <form method="post" action="/storage/local">
+      <input type="hidden" name="next" value="{{ current }}">
+      <label data-i18n="local_products_url">رابط تحميل بيانات المنتجات</label>
+      <input name="products_url" type="url" dir="ltr" maxlength="500" placeholder="http://192.168.1.10:9000/products">
+      <label data-i18n="local_sources_url">رابط تحميل بيانات المصادر</label>
+      <input name="sources_url" type="url" dir="ltr" maxlength="500" placeholder="http://192.168.1.10:9000/sources">
+      <div class="dlg-actions">
+        <button data-i18n="save_conn">حفظ وتفعيل</button>
+        <button type="button" class="btn-outline" data-close data-i18n="close">إغلاق</button>
+      </div>
+    </form>
+  {% endif %}
+</dialog>
+
+<!-- ============ نافذة الروبوت 3: تخزين سحابي ============ -->
+<dialog id="dlg-cloud" class="dlg">
+  <h3 data-i18n="d_cloud_title">تخزين سحابي خاص بك</h3>
+  {% if open_dlg == 'dlg-cloud' and msg %}<p class="err" data-i18n="{{ msg }}"></p>{% endif %}
+  <p class="muted" data-i18n="d_cloud_hint"></p>
+  {% if cld %}
+    <p class="status-ok" data-i18n="connected">متصل ✅</p>
+    {% if cld.sql_api %}<p><span data-i18n="cloud_sql"></span>:<br><span dir="ltr">{{ cld.sql_api }}</span></p>{% endif %}
+    {% if cld.nosql_api %}<p><span data-i18n="cloud_nosql"></span>:<br><span dir="ltr">{{ cld.nosql_api }}</span></p>{% endif %}
+    <form method="post" action="/storage/disconnect" class="dlg-actions">
+      <input type="hidden" name="next" value="{{ current }}"><input type="hidden" name="mode" value="cloud">
+      <button class="btn-danger" data-i18n="disconnect">فصل</button>
+      <button type="button" class="btn-outline" data-close data-i18n="close">إغلاق</button>
+    </form>
+  {% else %}
+    <form method="post" action="/storage/cloud">
+      <input type="hidden" name="next" value="{{ current }}">
+      <label data-i18n="cloud_sql">رابط API لقاعدة SQL</label>
+      <input name="sql_api" type="url" dir="ltr" maxlength="500" placeholder="https://sql.example.com/api" autocomplete="off">
+      <label data-i18n="cloud_nosql">رابط API لقاعدة NoSQL</label>
+      <input name="nosql_api" type="url" dir="ltr" maxlength="500" placeholder="https://nosql.example.com/api" autocomplete="off">
+      <div class="dlg-actions">
+        <button data-i18n="save_conn">حفظ وتفعيل</button>
+        <button type="button" class="btn-outline" data-close data-i18n="close">إغلاق</button>
+      </div>
+    </form>
+  {% endif %}
+</dialog>

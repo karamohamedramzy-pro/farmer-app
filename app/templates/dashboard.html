@@ -49,12 +49,12 @@
         {% set m = r.money_start + r.money_end %}
         <tr>
           <td>{{ r.entry_date }}</td>
-          <td class="plus">+{{ r.qty_start|round(2) }}</td>
-          <td class="minus">{{ r.qty_end|round(2) }}</td>
-          <td class="{{ 'plus' if q>=0 else 'minus' }}">{{ '+' if q>=0 }}{{ q|round(2) }}</td>
-          <td class="minus">{{ r.money_start|round(2) }}$</td>
-          <td class="plus">+{{ r.money_end|round(2) }}$</td>
-          <td class="{{ 'plus' if m>=0 else 'minus' }}">{{ '+' if m>=0 }}{{ m|round(2) }}$</td>
+          <td class="plus">+{{ r.qty_start|num }}</td>
+          <td class="minus">{{ r.qty_end|num }}</td>
+          <td class="{{ 'plus' if q>=0 else 'minus' }}">{{ '+' if q>=0 }}{{ q|num }}</td>
+          <td class="minus">{{ r.money_start|num }}$</td>
+          <td class="plus">+{{ r.money_end|num }}$</td>
+          <td class="{{ 'plus' if m>=0 else 'minus' }}">{{ '+' if m>=0 }}{{ m|num }}$</td>
         </tr>
       {% endfor %}
     </table>

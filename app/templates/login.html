@@ -1,23 +1,14 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>مزرعتي</title>
-<link rel="stylesheet" href="/static/css/style.css">
-<script src="/static/js/i18n.js"></script>
-</head>
-<body>
-<button id="langBtn" class="lang-btn" type="button">English</button>
-
-<div class="box">
-  <h1 data-i18n="app_name">🌾 مزرعتي</h1>
+{% extends "auth_base.html" %}
+{% block body %}
   {% if error %}<p class="err" data-i18n="{{ error }}"></p>{% endif %}
+  <p class="muted" data-i18n="login_hint">اكتب بريدك الإلكتروني وسنرسل لك رابط الدخول.</p>
   <form method="post" action="/login">
-    <input name="username" data-i18n-placeholder="username" placeholder="الاسم" required>
-    <input name="password" type="password" data-i18n-placeholder="password" placeholder="كلمة السر" required>
-    <button data-i18n="login">دخول</button>
+    <label for="email" data-i18n="email">البريد الإلكتروني</label>
+    <input id="email" name="email" type="email" value="{{ email or '' }}" autocomplete="email"
+           data-i18n-placeholder="ph_email" placeholder="البريد الإلكتروني" required>
+    <button class="btn-block" data-i18n="login_btn">أرسل لي رابط الدخول</button>
   </form>
+  <a class="btn btn-outline btn-block" href="/register" data-i18n="create_account">إنشاء حساب جديد</a>
 
   <div class="guide">
     <h3 data-i18n="guide_title">📖 كيف تستعمل الموقع؟</h3>
@@ -27,9 +18,8 @@
       <li data-i18n="g3"></li>
       <li data-i18n="g4"></li>
       <li data-i18n="g5"></li>
+      <li data-i18n="g6"></li>
     </ol>
     <p data-i18n="g_example"></p>
   </div>
-</div>
-</body>
-</html>
+{% endblock %}
