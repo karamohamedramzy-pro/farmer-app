@@ -24,3 +24,16 @@ Try `ahmad@example.com`, open the on-screen demo link, and use code `123456`. Re
 - Production integration must implement authenticated JSON endpoints, session management, validation, authorization, real delivery and storage, error/expiry/attempt-limit handling, CSRF protection as appropriate, and properly configured support links. Never trust the prototype's demo checks.
 
 For a visual component/state gallery open `/components`. The normal screens demonstrate the complete forms, navigation, tables and footer. Run the component checks with `npm test`.
+
+## Installable web app
+
+The login page provides mobile and desktop install controls. These install the **same web app on the device currently being used**, not an APK, iOS app-store package, or desktop executable. A supported browser may show its native installation prompt; otherwise the interface gives browser-specific instructions. On iPhone/iPad, open the site in Safari and use Share → Add to Home Screen. On desktop, use a supporting browser such as Chrome or Edge. Installation support and prompts depend on the device and browser. If the site is embedded in a preview frame, open it in a separate browser tab first.
+
+Build and serve the root of `dist` at the **origin root** over HTTPS (or localhost for development). The manifest, icons and service worker use root-relative paths, and the host must serve `sw.js` and `manifest.webmanifest` as files and provide SPA fallback for the client routes. Deploy the entire build together; the generated worker precaches the versioned static shell only. The worker is registered in production builds, not by the development server. To try it locally:
+
+```bash
+npm run build
+npm run preview
+```
+
+After the first successful online load, the cached interface can open offline, including known client-side routes. The worker does not cache API responses or form submissions and does not provide offline synchronization. Updates wait until existing controlled pages close; no forced reload is used. The React prototype still keeps changes in memory only, so an offline launch or refresh **does not restore user records**. Before connecting FastAPI, design authenticated persistence and offline sync separately; do not cache private responses in the shell.

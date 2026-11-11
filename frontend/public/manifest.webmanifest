@@ -1,0 +1,18 @@
+{
+  "id": "/",
+  "name": "مزرعتي - TB-farm",
+  "short_name": "مزرعتي",
+  "description": "دفتر يومي للمزارعين وتجار المنتجات الزراعية",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f1f5ef",
+  "theme_color": "#17432b",
+  "icons": [
+    {"src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
