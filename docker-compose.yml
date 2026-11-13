@@ -1,10 +1,8 @@
-# للتجربة المحلية:  docker compose up --build   ثم افتح http://localhost:8000
-# نسخة BETA لا تحتاج قاعدة بيانات. عند تفعيلها أضف خدمة postgres هنا (انظر doc.md).
+# تجربة محلية فقط: بيانات الذاكرة تختفي عند إعادة تشغيل الحاوية.
 services:
   web:
     build: .
     ports:
       - "8000:8000"
     environment:
-      SECRET_KEY: local-dev-key
       DEV_SHOW_CODES: "1"

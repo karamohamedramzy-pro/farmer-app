@@ -7,7 +7,7 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('tb-farm-shell-') && key !== CACHE).map(key => caches.delete(key)))));
 });
-const isPage = path => /^\/(?:|register|check-email|verify-phone|home|products|sources(?:\/new|\/\d+\/edit)?|components)\/?$/.test(path);
+const isPage = path => /^\/(?:|register|check-email|verify-phone|home|products|sources(?:\/new|\/[^/]+\/edit)?|components)\/?$/.test(path);
 self.addEventListener('fetch', event => {
   const request = event.request;
   const url = new URL(request.url);
